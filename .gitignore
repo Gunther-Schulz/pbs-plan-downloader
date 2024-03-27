@@ -1,0 +1,11 @@
+DATA/
+
+.DS_Store
+
+
+*.csv
+
+bpläne/
+fpläne/
+
+found_pdfs.txt
