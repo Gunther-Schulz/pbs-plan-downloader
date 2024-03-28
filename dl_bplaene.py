@@ -20,7 +20,7 @@ df['inkrafttre'] = pd.to_datetime(df['inkrafttre'], errors='coerce')
 df = df.dropna(subset=['inkrafttre'])
 
 # Specify date range
-start_date = '2021-01-01'
+start_date = '2020-01-01'
 end_date = '2024-12-31'
 
 # Filter the DataFrame

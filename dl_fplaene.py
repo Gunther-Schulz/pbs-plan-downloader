@@ -1,6 +1,5 @@
 import shutil
 from PyPDF2 import PdfReader, errors
-from PyPDF2 import PdfReader
 import os
 import pandas as pd
 import requests
@@ -113,45 +112,45 @@ for i, row in df.iterrows():
             os.rename(temp_pdf_path, pdf_path)
 
 
-# Create a text file to store the PDFs that contain "solar" or "photov"
-with open('found_pdfs.txt', 'w') as f:
-    # Walk through the main directory
-    for root, dirs, files in os.walk(main_dir):
-        for file in files:
-            if file.endswith('.pdf'):
-                # Open the PDF
-                pdf_path = os.path.join(root, file)
-                try:
-                    with open(pdf_path, 'rb') as pdf_file:
-                        # Read the PDF
-                        pdf_reader = PdfReader(pdf_file)
-                        text = ''
-                        for page in pdf_reader.pages:
-                            text += page.extract_text()
+# # Create a text file to store the PDFs that contain "solar" or "photov"
+# with open('found_pdfs.txt', 'w') as f:
+#     # Walk through the main directory
+for root, dirs, files in os.walk(main_dir):
+    for file in files:
+        if file.endswith('.pdf'):
+            # Open the PDF
+            pdf_path = os.path.join(root, file)
+            try:
+                with open(pdf_path, 'rb') as pdf_file:
+                    # Read the PDF
+                    pdf_reader = PdfReader(pdf_file)
+                    text = ''
+                    for page in pdf_reader.pages:
+                        text += page.extract_text()
 
-                        # Search for "solar" or "photov"
-                        if 'solar' in text.lower() or 'photov' in text.lower():
-                            # Write the relative directory name and PDF name to the text file
-                            f.write(f'{os.path.relpath(pdf_path, main_dir)}\n')
+                    # Search for "solar" or "photov"
+                    if 'solar' in text.lower() or 'photov' in text.lower():
+                        # # Write the relative directory name and PDF name to the text file
+                        # f.write(f'{os.path.relpath(pdf_path, main_dir)}\n')
 
-                            # Move the directory to a different directory
-                            destination_dir = './solar_im_text_gefunden'
-                            # create dir if not exist
-                            if not os.path.exists(destination_dir):
-                                os.makedirs(destination_dir)
+                        # Move the directory to a different directory
+                        destination_dir = './solar_im_text_gefunden'
+                        # create dir if not exist
+                        if not os.path.exists(destination_dir):
+                            os.makedirs(destination_dir)
 
-                            # Get the name of the current directory
-                            current_dir_name = os.path.basename(root)
-                            # Construct the path where the directory would be if it was moved
-                            new_dir_path = os.path.join(
-                                destination_dir, current_dir_name)
+                        # Get the name of the current directory
+                        current_dir_name = os.path.basename(root)
+                        # Construct the path where the directory would be if it was moved
+                        new_dir_path = os.path.join(
+                            destination_dir, current_dir_name)
 
-                            # Only move the directory if it doesn't already exist in the destination
-                            if not os.path.exists(new_dir_path):
-                                shutil.move(root, destination_dir)
+                        # Only move the directory if it doesn't already exist in the destination
+                        if not os.path.exists(new_dir_path):
+                            shutil.move(root, destination_dir)
 
-                            # Break the inner loop
-                            break
+                        # Break the inner loop
+                        break
 
-                except errors.PdfReadError:
-                    print(f"Could not read {pdf_path}. It may be corrupted.")
+            except errors.PdfReadError:
+                print(f"Could not read {pdf_path}. It may be corrupted.")
